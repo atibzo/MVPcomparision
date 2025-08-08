@@ -1,5 +1,8 @@
 "use client";
 
+export const dynamic = "force-dynamic"; // ⬅️ prevent SSG/SSR pre-render
+export const revalidate = 0;            // ⬅️ disable caching for good measure
+
 import { useEffect, useState } from "react";
 import CompareVariantsModal from "../../components/CompareVariantsModal";
 

@@ -3,7 +3,8 @@
 import { Dialog, Transition } from "@headlessui/react";
 import { Fragment, useState } from "react";
 import parse from "html-react-parser";
-import html2pdf from "html2pdf.js";
+// ❌ remove top-level import of html2pdf.js (breaks on server)
+// import html2pdf from "html2pdf.js";
 
 type Variant = {
   name: string;
@@ -46,11 +47,12 @@ export default function CompareVariantsModal({
     }));
   };
 
-  const handleDownload = () => {
+  // ✅ dynamic import so it only runs in the browser
+  const handleDownload = async () => {
     const element = document.getElementById("comparison-content");
-    if (element) {
-      html2pdf().from(element).save("zostel_comparison.pdf");
-    }
+    if (!element) return;
+    const html2pdf = (await import("html2pdf.js")).default;
+    html2pdf().from(element).save("zostel_comparison.pdf");
   };
 
   const renderCell = (field: string, v: Variant) => {
